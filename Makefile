@@ -8,7 +8,7 @@ BINARY_NAME=main
 BINARY_UNIX=$(BINARY_NAME)_unix
 BUILD_PATH=./build
 
-all: deps clean start
+all: deps start
 
 build:
 	$(GOBUILD) -o $(BUILD_PATH)/$(BINARY_NAME) -v ./...
@@ -18,12 +18,12 @@ clean:
 	$(GOCLEAN)
 	rm -f $(BUILD_PATH)/$(BINARY_NAME)
 	rm -f $(BUILD_PATH)/$(BINARY_UNIX)
-start:
+start:clean
 	$(GOBUILD) -o $(BUILD_PATH)/$(BINARY_NAME)
 	$(BUILD_PATH)/$(BINARY_NAME)
 deps:
 	export GO111MODULE=on
-    export GOPROXY=https://mirrors.aliyun.com/goproxy/
+	export GOPROXY=https://mirrors.aliyun.com/goproxy/
 
 
 

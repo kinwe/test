@@ -3,12 +3,16 @@ package utils
 import "fmt"
 
 type Node struct {
-	Data interface{}   //定义数据域
-	Next *Node //定义地址域(指向下一个表的地址)
+	Data interface{} //定义数据域
+	Next *Node       //定义地址域(指向下一个表的地址)
 }
 
 type List struct {
+	count int64
+
 	headNode *Node //头节点
+
+	tailNode *Node
 }
 
 func (this *List) IsEmpty() bool {
@@ -20,40 +24,55 @@ func (this *List) IsEmpty() bool {
 	}
 }
 
-func (this *List) Length() int {
-	//获取链表头结点
-	cur := this.headNode
-	//定义一个计数器，初始值为0
-	count := 0
+func (this *List) Length() int64 {
 
-	for cur != nil {
-		//如果头节点不为空，则count++
-		count++
-		//对地址进行逐个位移
-		cur = cur.Next
-	}
-	return count
+	return this.count
 }
 
-func (this *List) Add(data interface{}) *Node {
+func (this *List) Add(data interface{}) {
 	node := &Node{Data: data}
-	node.Next = this.headNode
-	this.headNode = node
-	return node
+
+	if this.count > 0 {
+		node.Next = this.headNode
+		this.headNode = node
+	} else {
+		this.headNode = node
+		this.tailNode = this.headNode
+	}
+	this.count++
 }
 
 func (this *List) Append(data interface{}) {
 
 	node := &Node{Data: data}
-	if this.IsEmpty() {
+	if this.count == 0 {
 		this.headNode = node
+		this.tailNode = this.headNode
+		this.count++
 	} else {
-		cur := this.headNode
-		for cur.Next != nil {
-			cur = cur.Next
-		}
-		cur.Next = node
+		this.tailNode.Next = node
+		this.tailNode = this.tailNode.Next
+		this.count++
 	}
+}
+
+func (this *List) ReverseNode() *Node {
+	//  先声明两个变量
+	//  前一个节点
+	var preNode *Node
+	preNode = this.headNode
+	//  后一个节点
+	cur := new(Node)
+	cur = this.headNode.Next
+	preNode.Next = nil
+	for cur != nil {
+		nextNode := cur.Next
+		cur.Next = preNode
+		preNode = cur
+		cur = nextNode
+	}
+	this.headNode = preNode
+	return preNode
 }
 
 func (this *List) ShowList() {

@@ -41,10 +41,10 @@ func TestPop(t *testing.T) {
 		gcv.Convey("栈中元素应该为9999-0\n", func() {
 			gcv.So(func() bool {
 				s := InitStack()
-				for i := 0; i < 100000; i++ {
+				for i := 0; i < 100000000; i++ {
 					s.Push(i)
 				}
-				for i := 99999; i > -1; i-- {
+				for i := 99999999; i > -1; i-- {
 					t := s.Pop().(int)
 					if t != i {
 						return false
